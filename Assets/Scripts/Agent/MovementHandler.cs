@@ -139,6 +139,7 @@ public class MovementHandler : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         currentJumpCount = 0;
         lastJumpTime = -10f;
+        canMove = true;
     }
 
     public Vector2 GetVelocity()

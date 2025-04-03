@@ -16,6 +16,7 @@ public class Bomb : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetBool("isGrounded", false);
+        Destroy(gameObject, 10f);
     }
 
     void Update()
@@ -61,6 +62,12 @@ public class Bomb : MonoBehaviour
         foreach (Collider2D nearbyObject in colliders)
         {
             AgentController agent = nearbyObject.GetComponent<AgentController>();
+            PlayerMovement player = nearbyObject.GetComponent<PlayerMovement>();
+            if (player != null)
+            {
+                Vector2 forceDir = nearbyObject.transform.position - transform.position;
+                player.ApplyKnockback(forceDir.normalized * explosionForce);
+            }
             if (agent != null)
             {
                 Vector2 forceDir = nearbyObject.transform.position - transform.position;

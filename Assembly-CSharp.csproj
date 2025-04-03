@@ -65,6 +65,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.32f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Player\Bullet.cs" />
     <Compile Include="Assets\Scripts\Agent\BuleltAgent.cs" />
     <Compile Include="Assets\Scripts\Agent\MovementHandler.cs" />
     <Compile Include="Assets\Scripts\Item\ItemManager.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Assets\Scripts\Agent\PathFindingManager.cs" />
     <Compile Include="Assets\Scripts\Agent\BulletImpactHandler.cs" />
     <Compile Include="Assets\Scripts\Enemy\Cannon.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerAttack.cs" />
     <Compile Include="Assets\Scripts\Agent\AttackHandler.cs" />
     <Compile Include="Assets\Scripts\Agent\BulletDetector.cs" />
     <Compile Include="Assets\Scripts\Agent\AgentController.cs" />

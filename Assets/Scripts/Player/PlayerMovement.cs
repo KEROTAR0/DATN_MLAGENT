@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private bool isFalling;
     private int jumpCount;
     private Vector2 defaultPos;
+    private bool isKnockback;
+    public float knockbackTimer = 0;
+    public float knockbackDuration = 0.5f;
+    private bool canMove;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,13 +32,14 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isFalling", false);
         animator.SetBool("isGrounded", true);
         animator.SetBool("isJumping", false);
+        isKnockback = false;
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
-        CheckGrounded();
         if (Input.GetKeyDown(KeyCode.W) && jumpCount > 0)
             Jump();
 
@@ -46,11 +51,22 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isJumping", !isGrounded);
         animator.SetBool("isFalling", isFalling);
-
+        if (isKnockback)
+        {
+            knockbackTimer -= Time.deltaTime;
+            if (knockbackTimer <= 0f)
+            {
+                isKnockback = false;
+                EnableMovement();
+                rb.linearVelocity = Vector2.zero;
+            }
+            return;
+        }
     }
     
     void Move()
     {
+        if (!canMove) return; // Nếu không thể di chuyển, thoát khỏi hàm
         float moveInput = Input.GetAxis("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
         
@@ -71,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
     
     void FixedUpdate()
     {
+        CheckGrounded();
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         if (isGrounded)
         {
@@ -108,5 +125,23 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
     }
+    public void ApplyKnockback(Vector2 force)
+    {
+        isKnockback = true;
+        knockbackTimer = knockbackDuration;
+        DisableMovement();
 
+        float verticalMultiplier = 2.5f;
+        Vector2 adjustedForce = new Vector2(force.x, force.y * verticalMultiplier);
+
+        rb.linearVelocity = adjustedForce;
+    }
+    void DisableMovement()
+    {
+        canMove = false;
+    }
+    void EnableMovement()
+    {
+        canMove = true;
+    }
 }

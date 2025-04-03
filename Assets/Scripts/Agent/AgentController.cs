@@ -65,20 +65,6 @@ public class AgentController : Agent
             stuckCheckTimer = 0f;
             CheckIfStuck();
         }
-    }
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        Vector2 toItem = itemTransform.position - transform.position;
-        sensor.AddObservation(toItem.x);
-        sensor.AddObservation(toItem.y);
-
-        movementHandler.CollectObservations(sensor);
-        bulletDetector.CollectObservations(sensor);
-        attackHandler.CollectObservations(sensor);
-    }
-
-    public override void OnActionReceived(ActionBuffers actions)
-    {
         if (isKnockback)
         {
             knockbackTimer -= Time.deltaTime;
@@ -102,24 +88,27 @@ public class AgentController : Agent
             }
             return;
         }
+        PerformAttack();
 
+    }
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        Vector2 toItem = itemTransform.position - transform.position;
+        sensor.AddObservation(toItem.x);
+        sensor.AddObservation(toItem.y);
+
+        movementHandler.CollectObservations(sensor);
+        bulletDetector.CollectObservations(sensor);
+        attackHandler.CollectObservations(sensor);
+    }
+
+    public override void OnActionReceived(ActionBuffers actions)
+    {
         float moveInput = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
         movementHandler.Move(moveInput);
         animator.SetFloat("moving", Mathf.Abs(moveInput)); 
         pathUpdateTimer += Time.deltaTime;
-        if (pathUpdateTimer >= pathUpdateInterval)
-        {
-            UpdatePath();
-            pathUpdateTimer = 0f;
-        }
-        if (hasPath)
-        {
-            movementHandler.FollowPath();
-        }
-        else
-        {
-            movementHandler.MoveRandom();
-        }
+        
         int discreteAction = actions.DiscreteActions[0];
         switch (discreteAction)
         {
@@ -149,6 +138,21 @@ public class AgentController : Agent
                 Debug.Log("action 4");
                 break;
         }
+
+        if (pathUpdateTimer >= pathUpdateInterval)
+        {
+            UpdatePath();
+            pathUpdateTimer = 0f;
+        }
+        if (hasPath)
+        {
+            movementHandler.FollowPath();
+        }
+        else
+        {
+            movementHandler.MoveRandom();
+        }
+
         if (transform.position.y < -10f)
         {
             AddReward(fallPenalty);
@@ -156,7 +160,18 @@ public class AgentController : Agent
         }
         AddReward(-0.001f); // Phạt mỗi bước đi
     }
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        //ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        //continuousActions[0] = Input.GetAxis("Horizontal");
+        discreteActions[0] = 0; // Không có hành động nào mặc định
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            discreteActions[0] = 4; // Tấn công
+        }
+    }
     void UpdatePath()
     {
         if (pathfindingManager == null || itemTransform == null) 
@@ -187,7 +202,11 @@ public class AgentController : Agent
         isKnockback = true;
         knockbackTimer = knockbackDuration;
         movementHandler.DisableMovement();
-        GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+
+        float verticalMultiplier = 2.5f; 
+        Vector2 adjustedForce = new Vector2(force.x, force.y * verticalMultiplier);
+
+        GetComponent<Rigidbody2D>().AddForce(adjustedForce, ForceMode2D.Impulse);
     }
     private void PerformAttack()
     {

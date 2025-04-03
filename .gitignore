@@ -9,6 +9,7 @@
 UserSettings/
 MemoryCaptures/
 
+venv/
 # VS Code
 .vscode/
 

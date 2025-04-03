@@ -55,7 +55,7 @@ public class AttackHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator PerformRangeAttack(Collider2D player)
+    private IEnumerator PerformRangeAttack(Collider2D controller)
     {
         canAttack = false;
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
@@ -69,10 +69,10 @@ public class AttackHandler : MonoBehaviour
         canAttack = true;
     }
 
-    private IEnumerator PerformMeleeAttack(Collider2D player)
+    private IEnumerator PerformMeleeAttack(Collider2D controller)
     {
         canAttack = false;
-        AgentController agent = player.GetComponent<AgentController>();
+        AgentController agent = controller.GetComponent<AgentController>();
         if (agent != null)
         {
             Vector2 knockback = new Vector2(transform.right.x * meleeForce, meleeForce / 2);
@@ -87,6 +87,6 @@ public class AttackHandler : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(firePoint.position, firePoint.position + transform.right * 6f);
+        Gizmos.DrawLine(firePoint.position, firePoint.position + transform.right * attackRange);
     }
 }
