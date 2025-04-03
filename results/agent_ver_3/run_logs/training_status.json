@@ -2,22 +2,22 @@
     "AgentVer3": {
         "checkpoints": [
             {
-                "steps": 1167,
-                "file_path": "results\\agent_ver_3\\AgentVer3\\AgentVer3-1167.onnx",
-                "reward": -1.1708636392246594,
-                "creation_time": 1743583955.535291,
+                "steps": 320,
+                "file_path": "results\\agent_ver_3\\AgentVer3\\AgentVer3-320.onnx",
+                "reward": null,
+                "creation_time": 1743685927.3320706,
                 "auxillary_file_paths": [
-                    "results\\agent_ver_3\\AgentVer3\\AgentVer3-1167.pt"
+                    "results\\agent_ver_3\\AgentVer3\\AgentVer3-320.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 1167,
+            "steps": 320,
             "file_path": "results\\agent_ver_3\\AgentVer3.onnx",
-            "reward": -1.1708636392246594,
-            "creation_time": 1743583955.535291,
+            "reward": null,
+            "creation_time": 1743685927.3320706,
             "auxillary_file_paths": [
-                "results\\agent_ver_3\\AgentVer3\\AgentVer3-1167.pt"
+                "results\\agent_ver_3\\AgentVer3\\AgentVer3-320.pt"
             ]
         }
     },

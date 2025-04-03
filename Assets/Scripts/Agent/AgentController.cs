@@ -21,9 +21,7 @@ public class AgentController : Agent
     private MovementHandler movementHandler;
     private BulletDetector bulletDetector;
     private AttackHandler attackHandler;
-    private bool isAttacking = false;
-    private float attackCooldownTimer = 0f;
-    public float attackCooldown = 0.5f;
+    
     private float facingDirection = 1f;
 
     [Header("Rewards & Penalties")]
@@ -40,6 +38,8 @@ public class AgentController : Agent
     [SerializeField] private bool isKnockback = false;
     [SerializeField] private float knockbackDuration = 0.5f;
     [SerializeField] private float knockbackTimer = 0f;
+    [Header("Attack Target")]
+    public Transform playerTransform;
 
     public override void Initialize()
     {
@@ -76,20 +76,6 @@ public class AgentController : Agent
             }
             return;
         }
-
-        if (isAttacking)
-        {
-            attackCooldownTimer -= Time.deltaTime;
-            if (attackCooldownTimer <= 0)
-            {
-                isAttacking = false;
-                movementHandler.EnableMovement();
-                Debug.Log("Hết thời gian tấn công, đã bật lại di chuyển.");
-            }
-            return;
-        }
-        PerformAttack();
-
     }
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -99,7 +85,13 @@ public class AgentController : Agent
 
         movementHandler.CollectObservations(sensor);
         bulletDetector.CollectObservations(sensor);
-        attackHandler.CollectObservations(sensor);
+
+        float[] attackObs = attackHandler.GetObservations();
+        foreach (float obs in attackObs)
+        {
+            sensor.AddObservation(obs);
+        }
+
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -134,8 +126,25 @@ public class AgentController : Agent
                 }
                 break;
             case 4:
-                PerformAttack();
-                Debug.Log("action 4");
+                if (playerTransform != null)
+                {
+                    float distance = Vector2.Distance(transform.position, playerTransform.position);
+                    // Nếu Player ở trong khoảng melee, gọi melee attack (action = 1); ngược lại, range attack (action = 2)
+                    if (distance <= attackHandler.meleeAttackRadius)
+                    {
+                        attackHandler.ProcessAction(new float[] { 1f });
+                        Debug.Log("action 4: melee");
+                    }
+                    else
+                    {
+                        attackHandler.ProcessAction(new float[] { 2f });
+                        Debug.Log("action 4: range");
+                    }
+                }
+                else
+                {
+                    Debug.Log("attack action thiếu j đó");
+                }
                 break;
         }
 
@@ -163,13 +172,28 @@ public class AgentController : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         //ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        var discreteActions = actionsOut.DiscreteActions;        
         //continuousActions[0] = Input.GetAxis("Horizontal");
         discreteActions[0] = 0; // Không có hành động nào mặc định
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKey(KeyCode.Alpha1))
         {
-            discreteActions[0] = 4; // Tấn công
+            discreteActions[0] = 1;
+        }
+        // Nhấn phím 2: nhảy khi phát hiện đạn (action 2)
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            discreteActions[0] = 2;
+        }
+        // Nhấn phím 3: di chuyển và nhảy nếu đang đứng trên mặt đất (action 3)
+        else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            discreteActions[0] = 3;
+        }
+        // Nhấn phím 4: tấn công (action 4)
+        else if (Input.GetKey(KeyCode.Alpha4))
+        {
+            discreteActions[0] = 4;
         }
     }
     void UpdatePath()
@@ -207,15 +231,6 @@ public class AgentController : Agent
         Vector2 adjustedForce = new Vector2(force.x, force.y * verticalMultiplier);
 
         GetComponent<Rigidbody2D>().AddForce(adjustedForce, ForceMode2D.Impulse);
-    }
-    private void PerformAttack()
-    {
-        attackHandler.TryAttack();
-        isAttacking = true;
-        attackCooldownTimer = attackCooldown;
-        movementHandler.DisableMovement();
-
-        animator.SetTrigger("attack");
     }
     public void PickUpItem()
     {

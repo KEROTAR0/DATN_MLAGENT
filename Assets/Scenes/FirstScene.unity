@@ -508,7 +508,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   stuckCheckInterval: 1
-  attackCooldown: 0.5
   rewardPerItem: 1
   fallPenalty: -1
   bulletPenalty: -0.25
@@ -516,6 +515,7 @@ MonoBehaviour:
   isKnockback: 0
   knockbackDuration: 0.5
   knockbackTimer: 0
+  playerTransform: {fileID: 0}
 --- !u!114 &208203497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931cbebdaef76a7469969841bb4988bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 10
   jumpForce: 25
   maxJumpCount: 2
   jumpCooldown: 0.2
@@ -779,14 +779,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b35d3d33e69a2a458f2994bc9cc2aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 2041497068}
+  detectionRange: 8
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  meleeAttackPoint: {fileID: 713355313}
+  meleeAttackRadius: 1
+  meleeKnockbackForce: 10
+  meleeCooldown: 0.5
+  meleeAnimTrigger: melee
   bulletPrefab: {fileID: 1396654484501599796, guid: fafa616bd1d21194e812bd633dfb5225, type: 3}
+  bulletSpawnPoint: {fileID: 713355313}
   bulletSpeed: 10
-  meleeRange: 1.5
-  attackCooldown: 1
-  attackRange: 8
-  meleeForce: 10
-  rangeForce: 5
+  rangeKnockbackForce: 5
+  rangeCooldown: 3
+  rangeAnimTrigger: range
+  animator: {fileID: 208203498}
 --- !u!1 &260039549
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,7 +804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260039550}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground Check
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -873,7 +881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 406108370}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Range Attack Point
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -1222,7 +1230,7 @@ Transform:
   m_GameObject: {fileID: 713355312}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.53, y: -0.54, z: 0}
+  m_LocalPosition: {x: 0.754, y: -0.691, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1393,7 +1401,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 798719331}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Melee Attack Point
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -20410,8 +20418,8 @@ Tilemap:
   - first: {x: 12, y: 3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 16
+      m_TileIndex: 0
+      m_TileSpriteIndex: 4
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -20420,8 +20428,8 @@ Tilemap:
   - first: {x: 13, y: 3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 14
+      m_TileIndex: 0
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -20430,8 +20438,8 @@ Tilemap:
   - first: {x: 14, y: 3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 14
+      m_TileIndex: 0
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -20440,8 +20448,8 @@ Tilemap:
   - first: {x: 15, y: 3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 17
+      m_TileIndex: 0
+      m_TileSpriteIndex: 5
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -21030,8 +21038,8 @@ Tilemap:
   - first: {x: 12, y: 4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 11
+      m_TileIndex: 0
+      m_TileSpriteIndex: 4
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -21040,8 +21048,8 @@ Tilemap:
   - first: {x: 13, y: 4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 15
+      m_TileIndex: 0
+      m_TileSpriteIndex: 9
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -21050,8 +21058,8 @@ Tilemap:
   - first: {x: 14, y: 4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 15
+      m_TileIndex: 0
+      m_TileSpriteIndex: 7
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -21060,8 +21068,8 @@ Tilemap:
   - first: {x: 15, y: 4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 12
+      m_TileIndex: 0
+      m_TileSpriteIndex: 6
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -32389,49 +32397,49 @@ Tilemap:
       m_AllTileFlags: 1073741826
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 2705
+  - m_RefCount: 2713
     m_Data: {fileID: 11400000, guid: 256865a59272a6e488d26ab87bcd2e18, type: 2}
   - m_RefCount: 15
     m_Data: {fileID: 11400000, guid: d94fcd3d999421c41a713bc8b12f6cb0, type: 2}
-  - m_RefCount: 8
-    m_Data: {fileID: 11400000, guid: 85bb5b467b4676f478c486144276e913, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 5
     m_Data: {fileID: 117867462, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 30
     m_Data: {fileID: 279017829, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 144
+  - m_RefCount: 145
     m_Data: {fileID: -682635870, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 279
+  - m_RefCount: 280
     m_Data: {fileID: 1131729899, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 627
+  - m_RefCount: 629
     m_Data: {fileID: -403066562, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 487
+  - m_RefCount: 488
     m_Data: {fileID: 1189067428, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 361
+  - m_RefCount: 362
     m_Data: {fileID: -1962662614, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 58
+  - m_RefCount: 59
     m_Data: {fileID: -1250132273, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 162
     m_Data: {fileID: 976044707, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 552
+  - m_RefCount: 553
     m_Data: {fileID: -178294652, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 13
     m_Data: {fileID: 474508079, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 2
+  - m_RefCount: 1
     m_Data: {fileID: 1419852593, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 2
+  - m_RefCount: 1
     m_Data: {fileID: -1479352501, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 2
-    m_Data: {fileID: -838293866, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 2
-    m_Data: {fileID: -1416550963, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -688473319, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -1636924437, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 2728
     m_Data:
@@ -32567,9 +32575,9 @@ GameObject:
   - component: {fileID: 1823624862}
   - component: {fileID: 1823624861}
   - component: {fileID: 1823624866}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

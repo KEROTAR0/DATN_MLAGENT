@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class BulletAgent : MonoBehaviour
 {
-    private float knockbackForce = 5f;  // Giá trị mặc định
+    public LayerMask playerLayer;
+    public float lifetime = 5f;
+    public float knockbackForce = 5f;
 
-    public void SetKnockback(float force)
+    void OnCollisionEnter2D(Collision2D other)
     {
-        knockbackForce = force;
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
+        if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
-            other.GetComponent<AgentController>()?.AddReward(0.2f);
-            Vector2 knockback = new Vector2(transform.right.x * knockbackForce, knockbackForce / 3);
-            //other.GetComponent<AgentController>()?.ApplyKnockback(knockback);
+            Vector2 direction = (other.transform.position - transform.position).normalized;
+            PlayerMovement player = other.collider.GetComponent<PlayerMovement>();
+            if (player != null)
+            {
+                player.ApplyKnockback(direction * knockbackForce);
+            }
             Destroy(gameObject);
         }
         else

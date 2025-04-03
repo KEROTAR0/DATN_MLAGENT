@@ -89,7 +89,7 @@ public class PlayerAttack : MonoBehaviour
         // Kích hoạt animation range
         animator.SetTrigger(rangeAnimTrigger);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(waitRangeAnimation);
         
         // Tạo đạn từ prefab tại vị trí spawn
         if (bulletPrefab != null && bulletSpawnPoint != null)
