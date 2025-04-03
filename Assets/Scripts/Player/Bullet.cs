@@ -11,12 +11,12 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (((1 << collision.gameObject.layer) & agentLayer) != 0)
         {
             Vector2 direction = (collision.transform.position - transform.position).normalized;
-            AgentController agent = collision.GetComponent<AgentController>();
+            AgentController agent = collision.collider.GetComponent<AgentController>();
             if (agent != null)
             {
                 agent.ApplyKnockback(direction * knockbackForce);

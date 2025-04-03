@@ -21,6 +21,7 @@ public class PlayerAttack : MonoBehaviour
     public float rangeCooldown = 3f;          // Cooldown cho range attack
     private float rangeCooldownTimer = 0f;    // Bộ đếm cooldown range
     public string rangeAnimTrigger = "range";// Tên trigger trong Animator cho range
+    private float waitRangeAnimation = 0.2f;
 
     [Header("UI Settings")]
     public Text meleeCooldownText;          // UI Text hiển thị cooldown melee
@@ -57,7 +58,7 @@ public class PlayerAttack : MonoBehaviour
         // Xử lý input tấn công range (ví dụ phím K)
         if (Input.GetMouseButtonDown(1) && rangeCooldownTimer <= 0)
         {
-            RangeAttack();
+            StartCoroutine(RangeAttack());
             rangeCooldownTimer = rangeCooldown;
         }
     }
@@ -83,10 +84,12 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    void RangeAttack()
+    IEnumerator RangeAttack()
     {
         // Kích hoạt animation range
         animator.SetTrigger(rangeAnimTrigger);
+
+        yield return new WaitForSeconds(0.25f);
         
         // Tạo đạn từ prefab tại vị trí spawn
         if (bulletPrefab != null && bulletSpawnPoint != null)
