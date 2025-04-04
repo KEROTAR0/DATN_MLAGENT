@@ -12,6 +12,7 @@ public class AttackHandler : MonoBehaviour
     public float meleeAttackRadius = 1f;      // Phạm vi attack melee
     public float meleeKnockbackForce = 10f;   // Lực knockback khi melee
     public float meleeCooldown = 0.5f;        // Thời gian chờ giữa các melee attack
+    public float meleeDamage = 15f; 
     private float meleeCooldownTimer = 0f;
     public string meleeAnimTrigger = "melee"; // Tên trigger trong Animator cho melee
 
@@ -21,6 +22,7 @@ public class AttackHandler : MonoBehaviour
     public float bulletSpeed = 10f;        // Vận tốc đạn
     public float rangeKnockbackForce = 5f; // Lực knockback khi range attack
     public float rangeCooldown = 3f;       // Thời gian chờ giữa các range attack
+    public float rangeDamage = 7f;
     private float rangeCooldownTimer = 0f;
     public string rangeAnimTrigger = "range"; // Tên trigger trong Animator cho range
 
@@ -122,6 +124,13 @@ public class AttackHandler : MonoBehaviour
         {
             // Tính vector knockback hướng từ Agent đến Player
             Vector2 knockbackDir = (hit.transform.position - transform.position).normalized;
+
+            PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(meleeDamage);
+            }
+
             // Giả sử Player có component (ví dụ: PlayerMovement) với phương thức ApplyKnockback
             var player = hit.GetComponent<PlayerMovement>();
             if (player != null)
@@ -152,6 +161,7 @@ public class AttackHandler : MonoBehaviour
             if (bulletScript != null)
             {
                 bulletScript.knockbackForce = rangeKnockbackForce;
+                bulletScript.damage = rangeDamage;
             }
         }
     }

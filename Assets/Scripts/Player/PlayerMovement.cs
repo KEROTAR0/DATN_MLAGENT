@@ -21,12 +21,14 @@ public class PlayerMovement : MonoBehaviour
     public float knockbackTimer = 0;
     public float knockbackDuration = 0.5f;
     private bool canMove;
+    private PlayerHealth playerHealth;
 
     // Start is called before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
+        playerHealth = GetComponent<PlayerHealth>();
         jumpCount = maxJumps;
         defaultPos = transform.position;
         animator.SetBool("isFalling", false);
@@ -45,7 +47,10 @@ public class PlayerMovement : MonoBehaviour
 
         // Kiểm tra nếu người chơi rơi xuống dưới y = -10 thì reset vị trí
         if (transform.position.y < -10)
+        {
             ResetPosition();
+            playerHealth.TakeDamage(10);
+        }
 
         // Cập nhật animation
         animator.SetBool("isGrounded", isGrounded);

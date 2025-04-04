@@ -5,6 +5,7 @@ public class Bomb : MonoBehaviour
 {
     public float explosionRadius = 2f;
     public float explosionForce = 10f;
+    public float damage = 9f;
     public float explosionTimeAnimation = 0.25f;
     public float delayBeforeExplosion = 2f;
     private Rigidbody2D rb;
@@ -63,6 +64,11 @@ public class Bomb : MonoBehaviour
         {
             AgentController agent = nearbyObject.GetComponent<AgentController>();
             PlayerMovement player = nearbyObject.GetComponent<PlayerMovement>();
+            PlayerHealth playerHealth = nearbyObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage);
+            }
             if (player != null)
             {
                 Vector2 forceDir = nearbyObject.transform.position - transform.position;

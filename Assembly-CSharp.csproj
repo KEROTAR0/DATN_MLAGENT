@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Agent\AttackHandler.cs" />
     <Compile Include="Assets\Scripts\Agent\BulletDetector.cs" />
     <Compile Include="Assets\Scripts\Agent\AgentController.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Agent\PathVisualizer.cs" />
     <Compile Include="Assets\Scripts\Agent\GridManager.cs" />
   </ItemGroup>
