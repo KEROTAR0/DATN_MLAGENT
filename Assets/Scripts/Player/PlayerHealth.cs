@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D rb;
     [Header("Health Settings")]
     public float maxHealth = 100f;
-    private float currentHealth;
+    public float currentHealth;
     
     [Header("UI Settings")]
     // Image fill của thanh máu (đảm bảo Image có kiểu Fill Amount)
@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         UpdateHealthBar();
+
     }
     void Update()
     {
@@ -56,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
     /// <summary>
     /// Cập nhật UI thanh máu dựa trên tỉ lệ máu còn lại.
     /// </summary>
-    void UpdateHealthBar()
+    public void UpdateHealthBar()
     {
         if (healthBarFill != null)
         {
