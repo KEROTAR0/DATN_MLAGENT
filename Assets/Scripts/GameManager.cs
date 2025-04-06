@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("Multiple GameManager instances detected. Destroying duplicate.");
             Destroy(gameObject);
         }
     }
@@ -71,9 +72,9 @@ public class GameManager : MonoBehaviour
         // Nếu là scene gameplay (ví dụ tên scene bắt đầu bằng "Stage")
         if (scene.name.StartsWith("Stage"))
         {
-            pauseMenuPanel = GameObject.Find("PauseMenuPanel");
-            inGameOptionPanel = GameObject.Find("InGameOptionPanel");
-            confirmBackPanel = GameObject.Find("ConfirmBackPanel");
+            pauseMenuPanel = GameObject.Find("Canvas/Menu/Menu Panel");
+            inGameOptionPanel = GameObject.Find("Canvas/Menu/Option Panel");
+            confirmBackPanel = GameObject.Find("Canvas/Menu/Confirm Back Panel");
 
             // Đặt lại TimeScale
             Time.timeScale = 1f;
@@ -85,8 +86,13 @@ public class GameManager : MonoBehaviour
         }
         else if (scene.name == "MainMenu")
         {
+            pauseMenuPanel = null;
+            inGameOptionPanel = null;
+            confirmBackPanel = null;
             // Ở Main Menu có thể có panel riêng, gán lại nếu cần
-            // mainMenuPanel = GameObject.Find("MainMenuPanel");
+            mainMenuPanel = GameObject.Find("Canvas/Main Menu Panel");
+            optionPanel = GameObject.Find("Canvas/Option Panel");
+            helpPanel = GameObject.Find("Canvas/Help Panel");
         }
     }
     void AssignSubMenuButtonCallbacks()
@@ -94,7 +100,7 @@ public class GameManager : MonoBehaviour
         if (pauseMenuPanel != null)
         {
             // Tìm nút Resume
-            Button resumeBtn = pauseMenuPanel.transform.Find("ResumeButton")?.GetComponent<Button>();
+            Button resumeBtn = pauseMenuPanel.transform.Find("Resume")?.GetComponent<Button>();
             if (resumeBtn != null)
             {
                 resumeBtn.onClick.RemoveAllListeners();
@@ -102,7 +108,7 @@ public class GameManager : MonoBehaviour
             }
 
             // Tìm nút Reset Stage
-            Button resetBtn = pauseMenuPanel.transform.Find("ResetStageButton")?.GetComponent<Button>();
+            Button resetBtn = pauseMenuPanel.transform.Find("New Game")?.GetComponent<Button>();
             if (resetBtn != null)
             {
                 resetBtn.onClick.RemoveAllListeners();
@@ -110,7 +116,7 @@ public class GameManager : MonoBehaviour
             }
 
             // Tìm nút Option trong Pause Menu
-            Button optionBtn = pauseMenuPanel.transform.Find("OptionButton")?.GetComponent<Button>();
+            Button optionBtn = pauseMenuPanel.transform.Find("Setting")?.GetComponent<Button>();
             if (optionBtn != null)
             {
                 optionBtn.onClick.RemoveAllListeners();
@@ -118,7 +124,7 @@ public class GameManager : MonoBehaviour
             }
 
             // Tìm nút Back to Menu
-            Button backBtn = pauseMenuPanel.transform.Find("BackToMenuButton")?.GetComponent<Button>();
+            Button backBtn = pauseMenuPanel.transform.Find("Exit")?.GetComponent<Button>();
             if (backBtn != null)
             {
                 backBtn.onClick.RemoveAllListeners();
@@ -129,7 +135,7 @@ public class GameManager : MonoBehaviour
         if (inGameOptionPanel != null)
         {
             // Tìm nút Close Option trong In-Game Option Panel
-            Button closeOptionBtn = inGameOptionPanel.transform.Find("CloseOptionButton")?.GetComponent<Button>();
+            Button closeOptionBtn = inGameOptionPanel.transform.Find("Close Option")?.GetComponent<Button>();
             if (closeOptionBtn != null)
             {
                 closeOptionBtn.onClick.RemoveAllListeners();
@@ -214,7 +220,6 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         // Lưu dữ liệu người chơi tạm thời nếu cần (không reset điểm hay máu)
-        SavePlayerDataForScene();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -299,18 +304,21 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("Stage1");
+        LoadPlayerDataForScene();
     }
 
     public void LoadSecondStage()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("Stage2");
+        LoadPlayerDataForScene();
     }
 
     public void LoadThirdStage()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("Stage3");
+        LoadPlayerDataForScene();
     }
 
     #endregion

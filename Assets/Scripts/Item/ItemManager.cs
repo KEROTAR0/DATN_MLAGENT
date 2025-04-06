@@ -91,6 +91,12 @@ public class ItemManager : MonoBehaviour
                         // Nếu đã đạt giới hạn, chuyển sang màn tiếp theo
                         if (collectedTreasureCount >= treasureLimit)
                         {
+                            GameManager gameManager = FindFirstObjectByType<GameManager>();
+                            if(gameManager != null)
+                            {
+                                gameManager.SavePlayerDataForScene();
+                                Debug.Log("Đã lưu player data.");
+                            }
                             Debug.Log("Đã nhặt đủ Treasure. Chuyển sang màn tiếp theo.");
                             // Chuyển scene tùy thuộc vào stage hiện tại
                             if (sceneName == "Stage1")

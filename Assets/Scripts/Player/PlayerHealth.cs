@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -15,7 +16,15 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        currentHealth = maxHealth;
+        string sceneName = SceneManager.GetActiveScene().name;
+        GameManager gameManager = FindFirstObjectByType<GameManager>();
+        if (sceneName == "Stage2" || sceneName == "Stage3")
+        {
+            currentHealth = gameManager.persistentHealth;
+            UpdateHealthBar();
+        }
+        else
+            currentHealth = maxHealth;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         UpdateHealthBar();

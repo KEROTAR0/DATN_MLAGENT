@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Agent\MovementHandler.cs" />
     <Compile Include="Assets\Scripts\Item\ItemManager.cs" />
     <Compile Include="Assets\Scripts\Enemy\Bomb.cs" />
+    <Compile Include="Assets\Scripts\WindZone.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Agent\PathFindingManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerScore.cs" />
