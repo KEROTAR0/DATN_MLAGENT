@@ -11,7 +11,7 @@ using UnityEngine.Tilemaps;
 public class AgentController : Agent
 {
     private Vector2 initialPosition;
-
+    public GridManager gridManager;
     public Transform itemTransform;
     public PathfindingManager pathfindingManager;
     public Tilemap tilemap; // Gán Tilemap trong Inspector
@@ -91,7 +91,11 @@ public class AgentController : Agent
         {
             sensor.AddObservation(obs);
         }
-
+        if (gridManager != null)
+        {
+            float gapDistance = gridManager.GetGapDistanceAhead(transform.position, transform.right);
+            sensor.AddObservation(gapDistance); // agent sẽ biết khoảng cách gap phía trước
+        }
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -120,9 +124,14 @@ public class AgentController : Agent
             case 3:
                 if (movementHandler.IsGrounded)
                 {
-                    Debug.Log("action 3");
-                    movementHandler.Move(facingDirection);
-                    movementHandler.PerformJump();
+                    float gapDistance = gridManager != null ? gridManager.GetGapDistanceAhead(transform.position, transform.right) : 0f;
+                    if (gapDistance > 1f)
+                    {
+                        Debug.Log("action 3");
+                        movementHandler.Move(facingDirection);
+                        movementHandler.PerformJump();
+                    }
+                    
                 }
                 break;
             case 4:

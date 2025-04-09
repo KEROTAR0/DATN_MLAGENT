@@ -19,6 +19,13 @@ public class GameManager : MonoBehaviour
     public GameObject inGameOptionPanel;   // Panel Option trong game
     public GameObject confirmBackPanel;    // Panel xác nhận Back to Menu (Yes/No)
 
+    [Header("Game Over Panel")]
+    private GameObject gameOverPanel;
+    private Text highScoreText;
+    private Button newGameButton;
+    private Button exitButton;
+
+
     #endregion
 
     #region Audio Settings
@@ -78,6 +85,19 @@ public class GameManager : MonoBehaviour
 
             // Đặt lại TimeScale
             Time.timeScale = 1f;
+            // Game Over Panel
+            gameOverPanel = GameObject.Find("Canvas/Game Over Panel");
+            if (gameOverPanel != null)
+            {
+                gameOverPanel.SetActive(false); // Ẩn ban đầu
+
+                highScoreText = gameOverPanel.transform.Find("High Score")?.GetComponent<Text>();
+                newGameButton = gameOverPanel.transform.Find("New Game")?.GetComponent<Button>();
+                exitButton = gameOverPanel.transform.Find("Exit")?.GetComponent<Button>();
+
+                if (newGameButton != null) newGameButton.onClick.AddListener(() => LoadFirstStage());
+                if (exitButton != null) exitButton.onClick.AddListener(() => LoadMainMenu());
+            }
 
             // Tải dữ liệu tạm thời (score, health) vào các component của Player
             LoadPlayerDataForScene();
@@ -270,6 +290,32 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    public void ShowGameOver()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+
+            PlayerScore ps = FindFirstObjectByType<PlayerScore>();
+
+            int finalScore = ps.currentScore;
+            int highScore = PlayerPrefs.GetInt("FinalScore", 0);
+
+            if (finalScore > highScore)
+            {
+                PlayerPrefs.SetInt("HighScore", finalScore);
+                PlayerPrefs.Save();
+                highScore = finalScore;
+            }
+
+            if (highScoreText != null)
+                highScoreText.text = $"High Score: {highScore}";
+        }
+
+        Time.timeScale = 0f;
+    }
+
 
     #region Audio Functions
 

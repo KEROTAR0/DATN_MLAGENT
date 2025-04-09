@@ -27,46 +27,46 @@ public class GridManager : MonoBehaviour
     }
 
     public void GenerateGrid()
-{
-    validPositions.Clear();
-    nonWalkablePositions.Clear();
-
-    if (groundTilemap == null)
     {
-        Debug.LogError("Ground Tilemap chưa được gán!");
-        return;
-    }
+        validPositions.Clear();
+        nonWalkablePositions.Clear();
 
-    BoundsInt bounds = groundTilemap.cellBounds;
-    cellSize = groundTilemap.cellSize.x; // Ô vuông
-    gridOrigin = groundTilemap.CellToWorld(bounds.position);
-
-    for (int x = bounds.xMin; x < bounds.xMax; x++)
-    {
-        for (int y = bounds.yMin; y < bounds.yMax; y++)
+        if (groundTilemap == null)
         {
-            Vector3Int cellPos = new Vector3Int(x, y, 0);
+            Debug.LogError("Ground Tilemap chưa được gán!");
+            return;
+        }
 
-            if (groundTilemap.HasTile(cellPos))
+        BoundsInt bounds = groundTilemap.cellBounds;
+        cellSize = groundTilemap.cellSize.x; // Ô vuông
+        gridOrigin = groundTilemap.CellToWorld(bounds.position);
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
             {
-                Vector3Int cellAbove = new Vector3Int(x, y + 1, 0);
-                // Lấy vị trí world của ô và cộng thêm offset để ra chính giữa ô
-                Vector3 worldPos = groundTilemap.CellToWorld(cellPos) + new Vector3(cellSize * 0.5f, groundTilemap.cellSize.y * 0.5f+1, 0f);
-                // Nếu vẫn cần một offset theo trục y (ví dụ, để điều chỉnh vị trí spawn)
-                worldPos.y += positionOffset;
+                Vector3Int cellPos = new Vector3Int(x, y, 0);
 
-                if (!groundTilemap.HasTile(cellAbove))
+                if (groundTilemap.HasTile(cellPos))
                 {
-                    validPositions.Add(worldPos);
-                }
-                else
-                {
-                    nonWalkablePositions.Add(worldPos);
+                    Vector3Int cellAbove = new Vector3Int(x, y + 1, 0);
+                    // Lấy vị trí world của ô và cộng thêm offset để ra chính giữa ô
+                    Vector3 worldPos = groundTilemap.CellToWorld(cellPos) + new Vector3(cellSize * 0.5f, groundTilemap.cellSize.y * 0.5f+1, 0f);
+                    // Nếu vẫn cần một offset theo trục y (ví dụ, để điều chỉnh vị trí spawn)
+                    worldPos.y += positionOffset;
+
+                    if (!groundTilemap.HasTile(cellAbove))
+                    {
+                        validPositions.Add(worldPos);
+                    }
+                    else
+                    {
+                        nonWalkablePositions.Add(worldPos);
+                    }
                 }
             }
         }
     }
-}
 
 
     public Vector3 GetRandomPosition()
@@ -111,6 +111,21 @@ public class GridManager : MonoBehaviour
 
         return area;
     }
+
+    public float GetGapDistanceAhead(Vector2 currentPos, Vector2 direction)
+    {
+        float gapDistance = 0f;
+        Vector2 checkPos = currentPos + direction.normalized * cellSize;
+        int safetyCounter = 0; // tránh vòng lặp vô hạn
+        while (safetyCounter < 100 && !IsWalkableAtWorldPos(checkPos))
+        {
+            gapDistance += cellSize;
+            checkPos += direction.normalized * cellSize;
+            safetyCounter++;
+        }
+        return gapDistance; // nếu gapDistance = 0, tức ô bên cạnh walkable
+    }
+
 
     void OnDrawGizmos()
     {
