@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
             Jump();
 
         // Kiểm tra nếu người chơi rơi xuống dưới y = -10 thì reset vị trí
-        if (transform.position.y < -10)
+        if (transform.position.y < -20)
         {
             ResetPosition();
             playerHealth.TakeDamage(10);

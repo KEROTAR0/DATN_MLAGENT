@@ -135,6 +135,12 @@ public class AgentController : Agent
                 }
                 break;
             case 4:
+                if (movementHandler.IsGrounded)
+                {                    
+                    movementHandler.PerformJump();
+                }
+                break;
+            case 5:
                 if (playerTransform != null)
                 {
                     float distance = Vector2.Distance(transform.position, playerTransform.position);
@@ -171,7 +177,7 @@ public class AgentController : Agent
             movementHandler.MoveRandom();
         }
 
-        if (transform.position.y < -10f)
+        if (transform.position.y < -20f)
         {
             AddReward(fallPenalty);
             EndEpisode();
@@ -203,6 +209,10 @@ public class AgentController : Agent
         else if (Input.GetKey(KeyCode.Alpha4))
         {
             discreteActions[0] = 4;
+        }
+        else if (Input.GetKey(KeyCode.Alpha5))
+        {
+            discreteActions[0] = 5;
         }
     }
     void UpdatePath()
