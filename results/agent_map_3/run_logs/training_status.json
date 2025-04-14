@@ -1,23 +1,45 @@
 {
-    "AgentVer3": {
+    "AgentMap3": {
         "checkpoints": [
             {
-                "steps": 329,
-                "file_path": "results\\agent_map_3\\AgentVer3\\AgentVer3-329.onnx",
-                "reward": -1.0603076678055983,
-                "creation_time": 1744432153.8581495,
+                "steps": 293331,
+                "file_path": "results\\agent_map_3\\AgentMap3\\AgentMap3-293331.onnx",
+                "reward": 0.5233625680731054,
+                "creation_time": 1744599902.0795977,
                 "auxillary_file_paths": [
-                    "results\\agent_map_3\\AgentVer3\\AgentVer3-329.pt"
+                    "results\\agent_map_3\\AgentMap3\\AgentMap3-293331.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 329,
-            "file_path": "results\\agent_map_3\\AgentVer3.onnx",
-            "reward": -1.0603076678055983,
-            "creation_time": 1744432153.8581495,
+            "steps": 293331,
+            "file_path": "results\\agent_map_3\\AgentMap3.onnx",
+            "reward": 0.5233625680731054,
+            "creation_time": 1744599902.0795977,
             "auxillary_file_paths": [
-                "results\\agent_map_3\\AgentVer3\\AgentVer3-329.pt"
+                "results\\agent_map_3\\AgentMap3\\AgentMap3-293331.pt"
+            ]
+        }
+    },
+    "AgentMap2": {
+        "checkpoints": [
+            {
+                "steps": 1792,
+                "file_path": "results\\agent_map_3\\AgentMap2\\AgentMap2-1792.onnx",
+                "reward": null,
+                "creation_time": 1744599902.1948256,
+                "auxillary_file_paths": [
+                    "results\\agent_map_3\\AgentMap2\\AgentMap2-1792.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1792,
+            "file_path": "results\\agent_map_3\\AgentMap2.onnx",
+            "reward": null,
+            "creation_time": 1744599902.1948256,
+            "auxillary_file_paths": [
+                "results\\agent_map_3\\AgentMap2\\AgentMap2-1792.pt"
             ]
         }
     },

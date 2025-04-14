@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,10 +21,10 @@ public class GameManager : MonoBehaviour
     public GameObject confirmBackPanel;    // Panel xác nhận Back to Menu (Yes/No)
 
     [Header("Game Over Panel")]
-    private GameObject gameOverPanel;
-    private Text highScoreText;
-    private Button newGameButton;
-    private Button exitButton;
+    public GameObject gameOverPanel;
+    public Text highScoreText;
+    public Button newGameButton;
+    public Button exitButton;
 
 
     #endregion
@@ -86,7 +87,9 @@ public class GameManager : MonoBehaviour
             // Đặt lại TimeScale
             Time.timeScale = 1f;
             // Game Over Panel
-            gameOverPanel = GameObject.Find("Canvas/Game Over Panel");
+            Transform canvas = GameObject.Find("Canvas").transform;
+            gameOverPanel = canvas.Find("Game Over Panel")?.gameObject;
+
             if (gameOverPanel != null)
             {
                 gameOverPanel.SetActive(false); // Ẩn ban đầu
@@ -97,6 +100,10 @@ public class GameManager : MonoBehaviour
 
                 if (newGameButton != null) newGameButton.onClick.AddListener(() => LoadFirstStage());
                 if (exitButton != null) exitButton.onClick.AddListener(() => LoadMainMenu());
+            }
+            else
+            {
+                Debug.LogWarning("Game Over Panel not found in the scene.");
             }
 
             // Tải dữ liệu tạm thời (score, health) vào các component của Player
@@ -293,12 +300,18 @@ public class GameManager : MonoBehaviour
 
     public void ShowGameOver()
     {
+        StartCoroutine(DelayPauseTime());
+    }
+
+    private IEnumerator DelayPauseTime()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        Time.timeScale = 0f;
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
 
             PlayerScore ps = FindFirstObjectByType<PlayerScore>();
-
             int finalScore = ps.currentScore;
             int highScore = PlayerPrefs.GetInt("FinalScore", 0);
 
@@ -310,10 +323,8 @@ public class GameManager : MonoBehaviour
             }
 
             if (highScoreText != null)
-                highScoreText.text = $"High Score: {highScore}";
+                highScoreText.text = $"Score: {highScore}";
         }
-
-        Time.timeScale = 0f;
     }
 
 

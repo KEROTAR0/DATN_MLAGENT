@@ -49,16 +49,63 @@ public class ItemManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Xử lý khi Agent nhặt item (ví dụ: cộng điểm cho agent, ...)
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        // Xử lý khi Agent nhặt item
         if (other.CompareTag("Agent"))
         {
             Debug.Log("Nhặt item! Thêm phần thưởng +1");
             AgentController agentController = other.GetComponent<AgentController>();
+
             if (agentController != null)
             {
                 agentController.PickUpItem();
+
+                if (itemType == ItemType.Treasure)
+                {
+                    if (sceneName == "Stage3")
+                    {
+                        Debug.Log("Agent nhặt Treasure (Stage3)");
+                        StartCoroutine(RespawnItem());
+                    }
+                    else
+                    {
+                        if (collectedTreasureCount < treasureLimit)
+                        {
+                            collectedTreasureCount++;
+                            Debug.Log("Agent nhặt Treasure! Số Treasure còn lại: " + (treasureLimit - collectedTreasureCount));
+                            UpdateTreasureUI();
+                            StartCoroutine(RespawnItem());
+
+                            // Nếu hết Treasure, chuyển màn
+                            if (collectedTreasureCount >= treasureLimit)
+                            {
+                                GameManager gameManager = FindFirstObjectByType<GameManager>();
+                                if (gameManager != null)
+                                {
+                                    gameManager.SavePlayerDataForScene();
+                                    Debug.Log("Agent góp phần nhặt đủ Treasure. Chuyển màn.");
+                                }
+
+                                if (sceneName == "Stage1")
+                                    SceneManager.LoadScene("Stage2");
+                                else if (sceneName == "Stage2")
+                                    SceneManager.LoadScene("Stage3");
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("Đã đạt giới hạn Treasure (Agent).");
+                            StartCoroutine(RespawnItem());
+                        }
+                    }
+                }
+                else if (itemType == ItemType.Health)
+                {
+                    Debug.Log("Agent không cần máu. Bỏ qua item Health.");
+                    StartCoroutine(RespawnItem());
+                }
             }
-            StartCoroutine(RespawnItem());
         }
 
         // Xử lý khi Player nhặt item
@@ -69,8 +116,6 @@ public class ItemManager : MonoBehaviour
 
             if (itemType == ItemType.Treasure)
             {
-                string sceneName = SceneManager.GetActiveScene().name;
-                // Nếu đang ở Stage3 thì không giới hạn số Treasure
                 if (sceneName == "Stage3")
                 {
                     Debug.Log("Nhặt Treasure (Stage3)! +100 điểm");
@@ -79,7 +124,6 @@ public class ItemManager : MonoBehaviour
                 }
                 else
                 {
-                    // Ở Stage1 và Stage2, giới hạn số Treasure là treasureLimit
                     if (collectedTreasureCount < treasureLimit)
                     {
                         collectedTreasureCount++;
@@ -88,17 +132,16 @@ public class ItemManager : MonoBehaviour
                         UpdateTreasureUI();
                         StartCoroutine(RespawnItem());
 
-                        // Nếu đã đạt giới hạn, chuyển sang màn tiếp theo
                         if (collectedTreasureCount >= treasureLimit)
                         {
                             GameManager gameManager = FindFirstObjectByType<GameManager>();
-                            if(gameManager != null)
+                            if (gameManager != null)
                             {
                                 gameManager.SavePlayerDataForScene();
                                 Debug.Log("Đã lưu player data.");
                             }
+
                             Debug.Log("Đã nhặt đủ Treasure. Chuyển sang màn tiếp theo.");
-                            // Chuyển scene tùy thuộc vào stage hiện tại
                             if (sceneName == "Stage1")
                                 SceneManager.LoadScene("Stage2");
                             else if (sceneName == "Stage2")
@@ -131,6 +174,7 @@ public class ItemManager : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator RespawnItem()
     {

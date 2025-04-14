@@ -2322,7 +2322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &852491971
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7138,6 +7138,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthBarFill: {fileID: 1365648575}
+  invincibilityDuration: 0.5
 --- !u!114 &1823624868
 MonoBehaviour:
   m_ObjectHideFlags: 0

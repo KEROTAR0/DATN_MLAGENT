@@ -902,10 +902,10 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 138d6748cc214b14ca439107488f3f5f, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: d3a8e4d94d7936f4f8867c63ef9f13af, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: AgentVer6
+  m_BehaviorName: AgentMap2
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -6014,41 +6014,11 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741826
-  - first: {x: 13, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 15
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741826
-  - first: {x: 14, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 11
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741826
-  - first: {x: 15, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 23
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741826
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 234
     m_Data: {fileID: 11400000, guid: 85bb5b467b4676f478c486144276e913, type: 2}
-  - m_RefCount: 7
+  - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: d94fcd3d999421c41a713bc8b12f6cb0, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
@@ -6073,7 +6043,7 @@ Tilemap:
     m_Data: {fileID: 1594751639, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 5
     m_Data: {fileID: -688473319, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 13
+  - m_RefCount: 12
     m_Data: {fileID: 474508079, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -266323542, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
@@ -6081,7 +6051,7 @@ Tilemap:
     m_Data: {fileID: -1880283244, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 9
     m_Data: {fileID: -1855334884, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 11
+  - m_RefCount: 10
     m_Data: {fileID: 1419852593, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 17
     m_Data: {fileID: -597190422, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
@@ -6097,7 +6067,7 @@ Tilemap:
     m_Data: {fileID: 709763760, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 9
     m_Data: {fileID: -1416550963, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
-  - m_RefCount: 4
+  - m_RefCount: 3
     m_Data: {fileID: -1479352501, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   - m_RefCount: 31
     m_Data: {fileID: 1984412138, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
@@ -6108,7 +6078,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: -1636924437, guid: b83886111197efe4992f75b7cd2ef803, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 241
+  - m_RefCount: 238
     m_Data:
       e00: 1
       e01: 0
@@ -6127,7 +6097,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 241
+  - m_RefCount: 238
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -6202,14 +6172,6 @@ CompositeCollider2D:
         Y: -10000000
       - X: 50000000
         Y: -10000000
-    - - X: 160000000
-        Y: 20000000
-      - X: 130000000
-        Y: 20000000
-      - X: 130000000
-        Y: 10000000
-      - X: 160000000
-        Y: 10000000
     - - X: 100000000
         Y: 10000000
       - X: 70000000
@@ -6280,10 +6242,6 @@ CompositeCollider2D:
         Y: -160000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 15.999971, y: 1}
-      - {x: 15.999971, y: 2}
-      - {x: 13, y: 1.9999708}
-      - {x: 13.00003, y: 1}
     - - {x: 4.999971, y: -1}
       - {x: 4.999971, y: 2}
       - {x: -3, y: 1.9999708}
@@ -35532,6 +35490,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthBarFill: {fileID: 1365648575}
+  invincibilityDuration: 0.5
 --- !u!114 &1823624868
 MonoBehaviour:
   m_ObjectHideFlags: 0
