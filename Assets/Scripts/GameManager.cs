@@ -116,10 +116,12 @@ public class GameManager : MonoBehaviour
             pauseMenuPanel = null;
             inGameOptionPanel = null;
             confirmBackPanel = null;
+            Transform canvas = GameObject.Find("Canvas").transform;
+
             // Ở Main Menu có thể có panel riêng, gán lại nếu cần
             mainMenuPanel = GameObject.Find("Canvas/Main Menu Panel");
-            optionPanel = GameObject.Find("Canvas/Option Panel");
-            helpPanel = GameObject.Find("Canvas/Help Panel");
+            optionPanel = canvas.Find("Option Panel")?.gameObject;
+            helpPanel = canvas.Find("Help Panel")?.gameObject;
         }
     }
     void AssignSubMenuButtonCallbacks()
