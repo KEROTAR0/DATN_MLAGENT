@@ -10,6 +10,7 @@ UserSettings/
 MemoryCaptures/
 
 venv/
+results/
 # VS Code
 .vscode/
 
